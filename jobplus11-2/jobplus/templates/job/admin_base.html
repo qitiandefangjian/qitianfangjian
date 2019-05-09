@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container" >
+<div class="row" >
+    <div class="col-xs-2 col-md-2"> 
+    <h2>职位管理</h2>
+      <div class="btn-group-vertical" role="group" aria-label="...">
+        <a href="#" type="button" class="btn btn-default">职位信息</a>
+        <a href="{{ url_for('job.newjob') }}" type="button" class="btn btn-default">添加职位</a>
+      </div>
+    <h2>简历管理</h2>
+        <a href="{{ url_for('job.todolist') }}" type="button" class="btn btn-default">未处理列表</a>
+        <a href="{{ url_for('job.rejectlist') }}" type="button" class="btn btn-default">不合适列表</a>
+        <a href="{{ url_for('job.interviewlist') }}" type="button" class="btn btn-default">面试列表</a>
+    </div>
+    <div class="col-xs-10 col-md-10"> 
+    {% block users %}
+
+    {% endblock %}         
+    </div>
+</div>
+</div>
+{% endblock %}

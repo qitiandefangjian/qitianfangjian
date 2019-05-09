@@ -1,0 +1,6 @@
+{% extends 'job/admin_base.html' %}
+{% from "macros.html" import render_form %}
+{% block users %}
+<h1 style="text-align: center">添加求职者</h1>
+{{ render_form(form, url_for('job.newjob')) }}
+{% endblock %}

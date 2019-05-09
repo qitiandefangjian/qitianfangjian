@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_form %}
+{% block indextitle %}{% endblock %}
+{% block body %}
+  <h1 class="form-signin-heading" style="text-align: center">{{ usersname }}</h1>
+{% if usersname == "求职者注册" %}
+{{ render_form(form,url_for('front.register')) }}
+{% elif usersname == "企业注册" %}
+{{ render_form(form,url_for('front.eregister')) }}
+{% endif %}
+{% endblock %}

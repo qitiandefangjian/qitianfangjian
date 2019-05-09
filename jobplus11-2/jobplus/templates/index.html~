@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block indextitle %}JOBPLUS{% endblock %}
+  {% block zhiwei %}
+ <div class="row">
+{% for job in jobs.items %}
+  {% if job.job_state == "上线" %}
+  {% if job.job_state2 != "待删除" %}
+  <div class="col-sm-3 col-md-3" style="height:200px" >
+    <div class="thumbnail" style="height:200px" >
+      <img src="..." alt="...">
+      <div class="caption">
+        <h3>{{ job.jobname }}</h3>
+        <p>...</p>
+        <p><a href="{{ url_for('job.job_des',job_id=job.id) }}" class="btn btn-primary" role="button">Button</a> <a href="{{ url_for('job.job_des',job_id=job.id) }}" class="btn btn-default" role="button">Button</a></p>
+      </div>
+    </div>
+   </div>
+  {% endif %}
+  {% endif %}
+{% endfor %}
+ </div>
+ <p style="text-align: center"><a class="btn btn-primary btn-lg" href="{{ url_for('job.index') }}" role="button" >查看更多</a></p>
+{% endblock %}
+
+  {% block gongsi %}
+  <div class="row">
+{% for company in companys.items %}
+  <div class="col-sm-3 col-md-3" style="height:200px" >
+    <div class="thumbnail" style="height:200px" >
+      <img src="..." alt="...">
+      <div class="caption">
+        <h3>{{ company.eusername }}</h3>
+        <p>...</p>
+        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+      </div>
+    </div>
+   </div>
+{% endfor %}
+  </div>
+  <p style="text-align: center"><a class="btn btn-primary btn-lg" href="{{ url_for('company.index') }}" role="button" >查看更多</a></p>
+  {% endblock %}

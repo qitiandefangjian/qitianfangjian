@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from 'macros.html' import pagination_form %}
+{% block indextitle %}To:公司{% endblock %}
+{% block body %}
+<div class="row">
+  {% for companys in pagination.items %}
+  <div class="col-sm-3 col-md-3" style="height:230px">
+    <div class="thumbnail" style="height:200px">
+
+      {% if companys.logo == None %}
+          <img href="#" width="100" height="100" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556906711954&di=35b073017aa28abf979fd266cad04d74&imgtype=0&src=http%3A%2F%2Fwww.goumin.com%2Fattachments%2Fsale%2F0%2F0%2F11%2F2855%2F730881.jpg%3F1370597599" class="img-circle" alt="">
+      {% else %}
+          <img href="#" width="100" height="100" src="{{ companys.logo }}" class="img-circle" alt="">
+      {% endif %}
+
+
+      <div class="caption">
+        <a href="{{ url_for('company.company_des',company_id=companys.id) }}" style="text-align: center"><p>{{ companys.eusername }}</p></a>
+        <p></p>
+        <a href="{{ url_for('company.company_des',company_id=companys.id) }}" role="button" style="text-align: center"><p>{{ companys.company_des }}</p></a>
+        <a href="{{ url_for('company.company_des',company_id=companys.id) }}" role="button" style="text-align: center"><p>在招职位:{{ companys.job_len() }}</p></a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{{ pagination_form(pagination,'company.index') }}
+
+{% endblock %}

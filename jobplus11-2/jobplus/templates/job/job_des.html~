@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block indextitle %}
+{{ jobs.jobname}}
+{% endblock %}
+{% block body %}
+
+<div class="container">
+<div class="row">
+  <div class="col-sm-9 col-md-9" style="height:310px">
+    <div class="thumbnail" style="height:300px">
+         <font size='4'  role="button" style="text-align: center"><p>职位:{{ jobs.jobname }}</p></font>
+         <font size='4'  role="button" style="text-align: center"><p>发布时间:{{ jobs.created_at }}</p></font>
+      <div class="caption">
+         <font size='4'  style="text-align: center"><p>工资待遇:{{ jobs.wages }}</p></font>
+        <p></p>
+         <font size='4'  role="button" style="text-align: center"><p>经验要求:{{ jobs.worktime }}年</p></font>
+         <font size='4'  role="button" style="text-align: center"><p>学历要求:{{ jobs.xueli }}</p></font>
+
+         <font size='4'  role="button" style="text-align: center"><p>地点:{{ jobs.work_address }}</p></font>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 col-md-3" style="height:310px">
+    <div class="thumbnail" style="height:300px">
+      {% if jobs.Jobid.logo == None %}
+          <img href="#" width="100" height="100" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556906711954&di=35b073017aa28abf979fd266cad04d74&imgtype=0&src=http%3A%2F%2Fwww.goumin.com%2Fattachments%2Fsale%2F0%2F0%2F11%2F2855%2F730881.jpg%3F1370597599" class="img-circle" alt="">
+      {% else %}
+          <img href="#" width="100" height="100" src="{{ jobs.Jobid.logo }}" class="img-circle" alt="">
+      {% endif %}
+        <font size='2'  role="button" style="text-align: center"><p>{{ jobs.Jobid.eusername }}</p></font>
+        <a   role="button" style="text-align: center"><p>官网:{{ jobs.Jobid.company_url }}</p></a>
+      <div class="caption">
+        <font size='2'  style="text-align: center"><p>简介:{{ jobs.job_des }}</p></font>
+        {% if current_user.messages %}
+        {% if jobs in current_user.messages[0].Jobm %}
+        <p size='2'  type="button" style="text-align: center" class="btn btn-default">已投递</p>
+        {% else %}
+        <a size='2' href="{{ url_for('job.resume',job_id=jobs.id) }}" type="button" style="text-align: center" class="btn btn-default">投递简历</a>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+    <div class="col-sm-9 col-md-69" style="height:310px">
+      <div class="thumbnail" style="height:300px">
+        <font size='8' style="text-align: center"><p>职位描述：</p></font>
+
+{{ jobs.describe }}
+      </div>
+    </div>
+
+
+
+  </div>
+
+</div>
+</div>
+{% endblock %}

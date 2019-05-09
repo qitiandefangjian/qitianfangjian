@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_form %}
+
+{% block body %}
+
+  <h1 class="form-signin-heading">用户登录</h1>
+
+{{ render_form(form,url_for('front.login')) }}
+
+{% endblock %}
+
+

@@ -1,0 +1,52 @@
+{% extends 'job/admin_base.html' %}
+{% from "macros.html" import pagination_form %}
+{% block indextitle %}企业管理界面{% endblock %}
+{% block users %}
+<div class="container">
+<div class="row">
+<div class="col-xs-12 col-md-12"> 
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">职业信息列表</div>
+  </div>
+<table class="table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>职位名称</th>
+    <th>企业名称</th>
+    <th>发布时间</th>
+    <th>状态(上线或者下线)</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  {% for jobs in pagination.items %}
+  {% if jobs.job_state2 != "待删除" %}
+  <tr>
+    <td>{{ jobs.id }}</td>
+    <td>{{ jobs.jobname }}</td>
+    <td>{{ jobs.Jobid.eusername }}</td>
+    <td>{{ jobs.created_at }}</td>
+    <td>{{ jobs.job_state }}</td>
+    <td>
+  <a href="{{ url_for('job.editjob',job_id=jobs.id,page=pagination.page) }}" type="button" class="btn btn-default">编辑</a>
+  <a href="{{ url_for('job.delete',job_id=jobs.id) }}" type="button" class="btn btn-default">删除</a>
+  <a href="{{ url_for('admin.jobs_states',page=pagination.page,job_id=jobs.id,state=jobs.job_state)}}" type="button" class="btn btn-default">{% if jobs.job_state == '上线' %} 下线 {% else %} 上线 {% endif %}</a>
+</div>
+    </td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+   <div class="row">
+{{ pagination_form(pagination,"job.euseradmin") }}
+   </div>
+  <!-- Default panel contents -->
+{% endblock %}

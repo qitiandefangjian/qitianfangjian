@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from 'macros.html' import pagination_form %}
+{% block indextitle %}To:职业{% endblock %}
+{% block body %}
+<div class="container">
+<div class="row">
+  {% for jobs in pagination.items %}
+  {% if jobs.job_state == "上线" %}
+  {% if jobs.job_state2 != "待删除" %}
+  <div class="col-sm-3 col-md-3" style="height:230px">
+    <div class="thumbnail" style="height:200px">
+        <a href="{{ url_for('job.job_des',job_id=jobs.id) }}" role="button" style="text-align: center"><p>职位:{{ jobs.jobname }}</p></a>
+        <a href="{{ url_for('job.job_des',job_id=jobs.id) }}" role="button" style="text-align: center"><p>发布时间:{{ jobs.created_at }}</p></a>
+      <div class="caption">
+        <a href="{{ url_for('job.job_des',job_id=jobs.id) }}" style="text-align: center"><p>工资待遇:{{ jobs.wages }}</p></a>
+        <p></p>
+        <a href="{{ url_for('job.job_des',job_id=jobs.id) }}" role="button" style="text-align: center"><p>地点:{{ jobs.work_address }}</p></a>
+        <a href="{{ url_for('job.job_des',job_id=jobs.id) }}" role="button" style="text-align: center"><p>公司名称:{{ jobs.Jobid.eusername }}</p></a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+</div>
+</div>
+{{ pagination_form(pagination,'job.index') }}
+
+{% endblock %}

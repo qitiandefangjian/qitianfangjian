@@ -1,0 +1,93 @@
+{% extends 'admin/admin_base.html' %}
+{% from "macros.html" import pagination_form %}
+{% block users %}
+<div class="container">
+<div class="row">
+<div class="col-xs-12 col-md-12"> 
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">用户信息列表</div>
+  </div>
+<table class="table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>邮箱</th>
+    <th>用户类型</th>
+    <th>姓名</th>
+    <th>状态(启用或者禁用)</th>	
+    <th>手机号</th>
+    <th>企业名称</th>
+    <th>企业网址</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for users in pagination.items %}
+    {% if users.role == 10 %}
+  <tr>
+    <td>{{ users.id }}</td>
+    <td>{{ users.email }}</td>
+    <td>求职者</td>
+    {% if users.messages %}
+    <td>{{ users.messages[0].username }}</td>
+    <td>{{ users.state }}</td>
+    <td>{{ users.messages[0].phone }}</td>
+    {% else %}
+    <td></td>
+    <td>{{ users.state }}</td>
+    <td></td>
+    {% endif %}
+    <td></td>
+    <td></td>
+
+    {% elif users.role == 20 %}
+  <tr>
+    <td>{{ users.id }}</td>
+    <td>{{ users.email }}</td>
+    <td>企业</td>
+    <td></td>
+    <td>{{ users.state }}</td>
+    {% if users.companys %}
+    <td>{{ users.companys[0].phone }}</td>
+    <td>{{ users.companys[0].eusername }}</td>
+    <td>{{ users.companys[0].company_url }}</td>
+    {% else %}
+    <td></td>
+    <td></td>
+    <td></td>
+    {% endif %}
+
+    {% elif users.role == 30 %}
+  <tr>
+    <td>{{ users.id }}</td>
+    <td>{{ users.name }}</td>
+    <td>管理员</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    {% endif %}
+    <td>
+<div class="btn-group" role="group" aria-label="...">
+  {% if users.role == 20 %}
+  <a href="{{ url_for('admin.editcompany',user_id=users.id) }}" type="button" class="btn btn-default">编辑</a>
+  {% else %}
+  <a href="{{ url_for('admin.edituser',user_id=users.id) }}" type="button" class="btn btn-default">编辑</a>
+  {% endif %}
+  <a href="{{ url_for('admin.state',page=pagination.page,email=users.email,state=users.state)}}" type="button" class="btn btn-default">{% if users.state == '禁用' %} 启用 {% else %} 禁用 {% endif %}</a>
+</div>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+   <div class="row">
+{{ pagination_form(pagination,"admin.users") }}
+   </div>
+</div>
+{% endblock %}
