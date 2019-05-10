@@ -2,11 +2,12 @@ from flask import Blueprint,render_template, redirect, url_for, flash
 from flask_login import login_user,logout_user,login_required
 from jobplus.models import User,Job,Company
 from jobplus.forms import LoginForm,RegisterForm
-
+from jobplus.decorators import euser_requeired,user_requeired,admin_requeired,login_timeat
 front = Blueprint('front', __name__)
 
 
 @front.route('/')
+@login_timeat
 def index():
     page = 1
     jobs = Job.query.order_by(-Job.id).paginate(
@@ -23,6 +24,7 @@ def index():
     return render_template('index.html',**locals())
 
 @front.route('/login',methods=['GET','POST'])
+@login_timeat
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -40,6 +42,7 @@ def login():
     return render_template('front/login.html',form=form)
     
 @front.route('/userregister',methods=['GET','POST'])
+@login_timeat
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -52,6 +55,7 @@ def register():
     return render_template('front/register.html',form=form,usersname="求职者注册")
 
 @front.route('/companyregister',methods=['GET','POST'])
+@login_timeat
 def eregister():
     form = RegisterForm()
     if form.validate_on_submit():
@@ -67,6 +71,7 @@ def eregister():
 
 @front.route('/logout')
 @login_required
+@login_timeat
 def logout():
     logout_user()
     flash('退出登录，欢迎你的下次光临')

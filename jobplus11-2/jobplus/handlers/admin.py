@@ -2,13 +2,14 @@ from flask import Blueprint,render_template, redirect, url_for, flash,session,re
 from flask_login import login_user,logout_user,login_required
 from jobplus.models import User,Company,Message,Job
 from jobplus.forms import EmessageForm,MessageForm,AdduserForm,AddcompanyForm
-from jobplus.decorators import euser_requeired,user_requeired,admin_requeired
+from jobplus.decorators import euser_requeired,user_requeired,admin_requeired,login_timeat
 
 admin = Blueprint('admin', __name__,url_prefix='/admin')
 
 
 @admin.route('/emessage',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def emessage():
     company=Company.query.get(int(session.get('user_id')))
     form = EmessageForm(obj=company)
@@ -28,6 +29,7 @@ def emessage():
 
 @admin.route('/message',methods=['GET','POST'])
 @user_requeired
+@login_timeat
 def message():
     message=Message.query.get(int(session.get('user_id')))
     form = MessageForm(obj=message)
@@ -47,12 +49,14 @@ def message():
 
 @admin.route('/')
 @admin_requeired
+@login_timeat
 def index():
     print('aaaaaaaaaaa')
     return render_template('admin/admin_base.html',**locals())
 
 @admin.route('/users')
 @admin_requeired
+@login_timeat
 def users():
     page = request.args.get('page',default=1,type=int)
     pagination = User.query.paginate(
@@ -66,6 +70,7 @@ def users():
 
 @admin.route('/users/adduser',methods=['GET','POST'])
 @admin_requeired
+@login_timeat
 def adduser():
     form = AdduserForm()
     if form.validate_on_submit():
@@ -81,6 +86,7 @@ def adduser():
 
 @admin.route('/users/addcompany',methods=['GET','POST'])
 @admin_requeired
+@login_timeat
 def addcompany():
     form = AddcompanyForm()
     if form.validate_on_submit():
@@ -95,6 +101,7 @@ def addcompany():
 
 @admin.route('/users/state')
 @admin_requeired
+@login_timeat
 def state():
     page = request.args.get('page',default=1,type=int)
     email = request.args.get('email')
@@ -113,6 +120,7 @@ def state():
 
 @admin.route('/users/edituser',methods=['GET','POST'])
 @admin_requeired
+@login_timeat
 def edituser():
     user_id = request.args.get('user_id')
     user = User.query.filter_by(id=user_id).first()
@@ -129,6 +137,7 @@ def edituser():
 
 @admin.route('/users/editcompany',methods=['GET','POST'])
 @admin_requeired
+@login_timeat
 def editcompany():
     user_id = request.args.get('user_id')
     user = User.query.filter_by(id=user_id).first()
@@ -148,6 +157,7 @@ def editcompany():
 
 @admin.route('/users/jobs')
 @admin_requeired
+@login_timeat
 def jobs():
     page = request.args.get('page',default=1,type=int)
     pagination = Job.query.paginate(
@@ -161,6 +171,7 @@ def jobs():
 
 @admin.route('/job/<int:job_id>/enable')
 @admin_requeired
+@login_timeat
 def jobs_state(job_id):
     page = request.args.get('page',default=1,type=int)
     state = request.args.get('state')
@@ -179,6 +190,7 @@ def jobs_state(job_id):
 
 @admin.route('/job/<int:job_id>/disable')
 @euser_requeired
+@login_timeat
 def jobs_states(job_id):
     page = request.args.get('page',default=1,type=int)
     state = request.args.get('state')

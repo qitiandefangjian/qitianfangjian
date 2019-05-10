@@ -13,6 +13,7 @@ class Base(db.Model):
 
 class User(Base,UserMixin):
     __tablename__ = 'user'
+    logindated_at = db.Column(db.DateTime, default=datetime.utcnow)
     ADMIN_ROLE = '30'
     USER_ROLE = '10'
     EUSER_ROLE = '20'
@@ -46,6 +47,18 @@ class User(Base,UserMixin):
         db.session.add(self)
         db.session.commit()
 
+    def login_datetime(self):
+        self.logindated_at = datetime.utcnow()
+        db.session.add(self)
+        db.session.commit()
+    def look_datetime(self):
+        seconds_time=(datetime.utcnow()-self.logindated_at).seconds
+        if seconds_time <= 60:
+            return '已登录'+str(seconds_time)+'秒'
+        elif seconds_time <= 3600:
+            return '已登录'+str(int(seconds_time/60))+'分钟'
+        elif seconds_time <= 86400:
+            return '已登录'+str(int(seconds_time/3600))'小时'
 class Company(Base):
     __tablename__ = 'company'
     id = db.Column(db.Integer,db.ForeignKey("user.id"),primary_key=True)
@@ -94,7 +107,7 @@ class Message(Base):
     def statess(self,job_id):
         minjob=Minjob.query.filter_by(message_id=self.id,job_id=int(job_id)).first()
         if minjob:
-        return minjob.state
+            return minjob.state
 
 
 Rela = db.Table('rela',

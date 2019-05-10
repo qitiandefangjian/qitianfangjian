@@ -2,7 +2,7 @@ from flask import Blueprint,render_template, redirect, url_for, flash,session,re
 from flask_login import login_user,logout_user,login_required,current_user
 from jobplus.models import User,Company,Message,Job,Minjob
 from jobplus.forms import EmessageForm,MessageForm,AdduserForm,AddcompanyForm,JobForm
-from jobplus.decorators import euser_requeired,user_requeired,admin_requeired,user_requeired2
+from jobplus.decorators import euser_requeired,user_requeired,admin_requeired,user_requeired2,login_timeat
 
 job = Blueprint('job', __name__,url_prefix='/job')
 
@@ -157,6 +157,6 @@ def rejectlist():
 @job.route('/userjobs',methods=['GET','POST'])
 @user_requeired
 def userjobs():
-    message = Message.query.filter_by(id=current_user.id)
+    message = Message.query.filter_by(id=current_user.id).first()
     print(message.Jobm)
     return  render_template('job/userjobs.html',message=message)

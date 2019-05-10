@@ -2,12 +2,13 @@ from flask import Blueprint,render_template, redirect, url_for, flash,session,re
 from flask_login import login_user,logout_user,login_required,current_user
 from jobplus.models import User,Company,Message,Job,Minjob
 from jobplus.forms import EmessageForm,MessageForm,AdduserForm,AddcompanyForm,JobForm
-from jobplus.decorators import euser_requeired,user_requeired,admin_requeired,user_requeired2
+from jobplus.decorators import euser_requeired,user_requeired,admin_requeired,user_requeired2,login_timeat
 
 job = Blueprint('job', __name__,url_prefix='/job')
 
 
 @job.route('/')
+@login_timeat
 def index():
     page = request.args.get('page',default=1,type=int)
     pagination = Job.query.order_by(-Job.id).paginate(
@@ -20,6 +21,7 @@ def index():
 
 
 @job.route('/<int:job_id>')
+@login_timeat
 def job_des(job_id):
     jobs=Job.query.filter_by(id=job_id).first()
 
@@ -27,6 +29,7 @@ def job_des(job_id):
 
 @job.route('/<int:job_id>/apply')
 @user_requeired2
+@login_timeat
 def resume(job_id):
     print(current_user.messages[0])
     message=current_user.messages[0].Sending_resume(job_id)
@@ -39,6 +42,7 @@ def resume(job_id):
 
 @job.route('/admin')
 @euser_requeired
+@login_timeat
 def euseradmin():
     page = request.args.get('page',default=1,type=int)
     pagination = Job.query.filter_by(job_company=current_user.id).paginate(
@@ -53,6 +57,7 @@ def euseradmin():
 
 @job.route('/<int:job_id>/edit',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def editjob(job_id):
     job = Job.query.filter_by(id=job_id).first()
     form = JobForm(obj=job)
@@ -67,6 +72,7 @@ def editjob(job_id):
 
 @job.route('/<int:job_id>/delete',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def delete(job_id):
     job = Job.query.filter_by(id=job_id).first()
     job.upstates2()
@@ -79,6 +85,7 @@ def delete(job_id):
 
 @job.route('/new',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def newjob():
     form = JobForm()
     if form.validate_on_submit():
@@ -92,6 +99,7 @@ def newjob():
 
 @job.route('/apply/todolist',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def todolist():
     page = request.args.get('page',default=1,type=int)
     pagination = Job.query.filter_by(job_company=current_user.id).paginate(
@@ -106,6 +114,7 @@ def todolist():
 
 @job.route('/apply/reject',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def reject():
     job_id = request.args.get('job_id')
     message_id = request.args.get('message_id')
@@ -116,6 +125,7 @@ def reject():
 
 @job.route('/apply/interview',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def interview():
     job_id = request.args.get('job_id')
     message_id = request.args.get('message_id')
@@ -127,6 +137,7 @@ def interview():
 
 @job.route('/apply/interviewlist',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def interviewlist():
     page = request.args.get('page',default=1,type=int)
     pagination = Job.query.filter_by(job_company=current_user.id).paginate(
@@ -141,6 +152,7 @@ def interviewlist():
 
 @job.route('/apply/rejectlist',methods=['GET','POST'])
 @euser_requeired
+@login_timeat
 def rejectlist():
     page = request.args.get('page',default=1,type=int)
     pagination = Job.query.filter_by(job_company=current_user.id).paginate(
@@ -156,6 +168,7 @@ def rejectlist():
 
 @job.route('/userjobs',methods=['GET','POST'])
 @user_requeired
+@login_timeat
 def userjobs():
     message = Message.query.filter_by(id=current_user.id).first()
     print(message.Jobm)

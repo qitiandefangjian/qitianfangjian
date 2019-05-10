@@ -50,8 +50,10 @@
 
       <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated %}
+        <li><a>{{ current_user.look_datetime() }}S登录</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">用户中心<span class="caret"></span></a>
+
           <ul class="dropdown-menu">
            
         {% if current_user.role == 30 %}
@@ -63,7 +65,7 @@
             <li><a href="{{ url_for('job.euseradmin') }}">企业管理页面</a></li>
         {% elif current_user.role == 10 %}
             <li><a href="{{ url_for('admin.message') }}">求职者信息编辑</a></li>
-            <li><a href="{{ url_for('admin.message') }}">简历信息</a></li>
+            <li><a href="{{ url_for('job.userjobs') }}">简历信息</a></li>
         {% endif %}
             <li><a href="{{ url_for('front.logout') }}">退出登录</a></li>
           </ul>
@@ -73,6 +75,7 @@
         <li><a href="{{ url_for('front.register') }}">求职者注册</a></li>
         <li><a href="{{ url_for('front.login') }}">登录</a></li>
         {% endif %}
+
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
